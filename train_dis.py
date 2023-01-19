@@ -75,6 +75,7 @@ def load_model(args):
     
     wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
     trainer = pl.Trainer(logger=wandb_logger,
+             resume_from_checkpoint=f'saved_model/{args.train_type}/epoch=99-val_loss=4.95-batch_size=8.ckpt',
              callbacks=[checkpoint_callback, early_stop_callback],
              devices=[1,2], strategy='ddp',
              accelerator='gpu',
@@ -87,8 +88,8 @@ def load_model(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DISNet Training')
     parser.add_argument('--input_size',        type=int,      default=1280)
-    parser.add_argument('--min_epoch',         type=int,      default=100)
-    parser.add_argument('--max_epoch',         type=int,      default=200)
+    parser.add_argument('--min_epoch',         type=int,      default=300)
+    parser.add_argument('--max_epoch',         type=int,      default=400)
     parser.add_argument('--load_data_on_mem',  type=bool,     default=False)
     parser.add_argument('--batch_size',        type=int,      default=16)
     parser.add_argument('--lr',                type=float,    default=0.0001)

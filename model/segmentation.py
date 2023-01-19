@@ -97,9 +97,11 @@ class Net(pl.LightningModule):
     def on_save_checkpoint(self, checkpoint: Dict[str, Any]) -> None:
         if self.gt_encoder:
             state_dict = checkpoint['state_dict']
+            sd = OD()
             for key, value in state_dict.items():
-                if 'gt_encoder' in key:
-                    state_dict.pop(key)
+                if 'gt_encoder' not in key:
+                    sd[key] = value
+            checkpoint['state_dict'] = sd
                 
     def predict_step(self, batch, batch_idx):
         image, gt = batch['image'], batch['gt']
