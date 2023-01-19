@@ -10,6 +10,8 @@ from typing import Dict, Any
 import pytorch_lightning as pl
 from model.isnet import DISNet, GtEncoder
 
+from collections import OrderedDict as OD
+
 bce_loss = nn.BCELoss()
 bce_w_loss = nn.BCEWithLogitsLoss()
 mse_loss = nn.MSELoss(reduction = "mean")
@@ -52,8 +54,12 @@ class Net(pl.LightningModule):
     def load_gt_encoder(self, gt_encoder, pretrained: str = None):
         self.gt_encoder = gt_encoder
         if pretrained:
-            state_dict = torch.load(pretrained, map_location='cpu')
-            self.gt_encoder.load_state_dict(state_dict)
+            state_dict = torch.load(pretrained, map_location='cpu')['state_dict']
+            sd = OD()
+            for key, value in state_dict.items():
+                sd[key.replace('net.', '')] = value
+                
+            self.gt_encoder.load_state_dict(sd)
             
         self.gt_encoder.eval()
         print('gt_encoder is loaded')
@@ -88,21 +94,13 @@ class Net(pl.LightningModule):
         self.val_loss = loss
         return loss
     
-#     def on_save_checkpoint(self, checkpoint: Dict[str, Any]) -> None:
-#         state_dict = checkpoint['state_dict']
-#         epoch = checkpoint['epoch']
-#         PATH = f'epoch={epoch}-val_loss={self.val_loss}-batch_size={self.batch_size}.pth'
-        
-#         key_word = 'net.'
-#         new_sd = OD()
-#         for key, value in state_dict.items():
-#             if key_word in key:
-#                 key = key.replace(key_word, '')
-#             new_sd[key] = value
-        
-#         # save .pth file seperately
-#         torch.save(new_sd, PATH)
-    
+    def on_save_checkpoint(self, checkpoint: Dict[str, Any]) -> None:
+        if self.gt_encoder:
+            state_dict = checkpoint['state_dict']
+            for key, value in state_dict.items():
+                if 'gt_encoder' in key:
+                    state_dict.pop(key)
+                
     def predict_step(self, batch, batch_idx):
         image, gt = batch['image'], batch['gt']
         return self.net(image)

@@ -18,6 +18,8 @@ class Dataset(Dataset):
         self.image_transform = image_transform
         self.gt_transform = gt_transform
         
+        print(f'images : {len(self.images)}')
+        print(f'gts : {len(self.gts)}')
         
         self.load_on_mem = load_on_mem
 

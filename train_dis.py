@@ -76,7 +76,7 @@ def load_model(args):
     wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
     trainer = pl.Trainer(logger=wandb_logger,
              callbacks=[checkpoint_callback, early_stop_callback],
-             devices=torch.cuda.device_count(), strategy='ddp',
+             devices=[1,2], strategy='ddp',
              accelerator='gpu',
              min_epochs=args.min_epoch,
              max_epochs=args.max_epoch,
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     parser.add_argument('--min_epoch',         type=int,      default=100)
     parser.add_argument('--max_epoch',         type=int,      default=200)
     parser.add_argument('--load_data_on_mem',  type=bool,     default=False)
-    parser.add_argument('--batch_size',        type=int,      default=32)
+    parser.add_argument('--batch_size',        type=int,      default=16)
     parser.add_argument('--lr',                type=float,    default=0.0001)
     parser.add_argument('--epsilon',           type=float,    default=1e-08)
     parser.add_argument('--train_type',        type=str,      default='disnet', choices=['disnet', 'gt_encoder'])

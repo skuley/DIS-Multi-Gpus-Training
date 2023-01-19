@@ -12,7 +12,7 @@ from tqdm import tqdm
 class Dataset(Dataset):
     def __init__(self, image_path='', transform=None):
         super(Dataset, self).__init__()
-        assert osp.isdir(image_path) == True, f"{image_path} is not a directory"
+#         assert osp.isdir(image_path) == True, f"{image_path} is not a directory"
 
         self.image_path = image_path
 
