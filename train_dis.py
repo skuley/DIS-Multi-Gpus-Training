@@ -11,6 +11,7 @@ from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 
 from model.isnet import DISNet, GtEncoder
+from model.segmentation import Net
 
 import argparse
 
@@ -39,15 +40,15 @@ def load_dataloader(args):
         tr_ds = Dataset(image_path=args.tr_im_path, gt_path=args.tr_gt_path,
                         image_transform=image_transform,
                         gt_transform=mask_transform,
-                        load_on_mem=True)
-        vd_ds = Dataset(im_root=args.vd_im_path, gt_root=args.vd_gt_path,
+                        load_on_mem=args.load_data_on_mem)
+        vd_ds = Dataset(image_path=args.vd_im_path, gt_path=args.vd_gt_path,
                         image_transform=vd_transform,
                         gt_transform=vd_transform,
-                        load_on_mem=True)
+                        load_on_mem=args.load_data_on_mem)
     else:
         from utils.gt_dataset import Dataset
-        tr_ds = Dataset(im_root=args.tr_im_path, transform=mask_transform)
-        vd_ds = Dataset(im_root=args.vd_im_path, transform=vd_transform)
+        tr_ds = Dataset(image_path=args.tr_gt_path, transform=mask_transform)
+        vd_ds = Dataset(image_path=args.vd_gt_path, transform=vd_transform)
     
     
     tr_dl = DataLoader(tr_ds, args.batch_size, shuffle=True, num_workers=8)
@@ -93,10 +94,10 @@ if __name__ == '__main__':
     parser.add_argument('--lr',                type=float,    default=0.0001)
     parser.add_argument('--epsilon',           type=float,    default=1e-08)
     parser.add_argument('--train_type',        type=str,      default='disnet', choices=['disnet', 'gt_encoder'])
-    parser.add_argument('--tr_im_path',        type=str,      default='../data/DIS5K/DIS-TR/im')
-    parser.add_argument('--tr_gt_path',        type=str,      default='../data/DIS5K/DIS-TR/gt')
-    parser.add_argument('--vd_im_path',        type=str,      default='../data/DIS5K/DIS-VD/im')
-    parser.add_argument('--vd_gt_path',        type=str,      default='../data/DIS5K/DIS-VD/gt')
+    parser.add_argument('--tr_im_path',        type=str,      default='../../dataset/DIS5K/DIS-TR/im')
+    parser.add_argument('--tr_gt_path',        type=str,      default='../../dataset/DIS5K/DIS-TR/gt')
+    parser.add_argument('--vd_im_path',        type=str,      default='../../dataset/DIS5K/DIS-VD/im')
+    parser.add_argument('--vd_gt_path',        type=str,      default='../../dataset/DIS5K/DIS-VD/gt')
     parser.add_argument('--save_weight_path',  type=str,      default='saved_model')
     parser.add_argument('--dis_weight',        type=str)
     parser.add_argument('--gt_weight',         type=str)

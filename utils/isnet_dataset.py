@@ -47,8 +47,8 @@ class Dataset(Dataset):
             transformed = gt_transform(image=image, mask=gt)
             image, gt = transformed['image'], transformed['mask']
 
-        # image = transforms.ToTensor()(image)
-        # gt = transforms.ToTensor()(gt)
+        image = transforms.ToTensor()(image)
+        gt = transforms.ToTensor()(gt)
         return image, gt
 
     def __getitem__(self, idx):
