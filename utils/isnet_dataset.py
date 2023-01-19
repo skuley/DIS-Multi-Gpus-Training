@@ -22,12 +22,12 @@ class Dataset(Dataset):
         self.load_on_mem = load_on_mem
 
         if self.load_on_mem:
-            self.load_data_on_mem()
+            self.load_data()
 
     def __len__(self):
         return len(self.gts)
 
-    def load_data_on_mem(self):
+    def load_data(self):
         self.im_lst = []
         self.gt_lst = []
         for im, gt in tqdm(zip(self.images, self.gts), total=self.__len__()):
