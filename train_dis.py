@@ -73,11 +73,10 @@ def load_model(args):
         mode="min"
     )
     
-    wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
-    trainer = pl.Trainer(logger=wandb_logger,
-             resume_from_checkpoint=f'saved_model/{args.train_type}/epoch=99-val_loss=4.95-batch_size=8.ckpt',
+    # wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
+    trainer = pl.Trainer(# logger=wandb_logger,
              callbacks=[checkpoint_callback, early_stop_callback],
-             devices=[1,2], strategy='ddp',
+             devices=torch.cuda.device_count(), strategy='ddp',
              accelerator='gpu',
              min_epochs=args.min_epoch,
              max_epochs=args.max_epoch,
@@ -95,10 +94,10 @@ if __name__ == '__main__':
     parser.add_argument('--lr',                type=float,    default=0.0001)
     parser.add_argument('--epsilon',           type=float,    default=1e-08)
     parser.add_argument('--train_type',        type=str,      default='disnet', choices=['disnet', 'gt_encoder'])
-    parser.add_argument('--tr_im_path',        type=str,      default='../../dataset/DIS5K/DIS-TR/im')
-    parser.add_argument('--tr_gt_path',        type=str,      default='../../dataset/DIS5K/DIS-TR/gt')
-    parser.add_argument('--vd_im_path',        type=str,      default='../../dataset/DIS5K/DIS-VD/im')
-    parser.add_argument('--vd_gt_path',        type=str,      default='../../dataset/DIS5K/DIS-VD/gt')
+    parser.add_argument('--tr_im_path',        type=str,      default='')
+    parser.add_argument('--tr_gt_path',        type=str,      default='')
+    parser.add_argument('--vd_im_path',        type=str,      default='')
+    parser.add_argument('--vd_gt_path',        type=str,      default='')
     parser.add_argument('--save_weight_path',  type=str,      default='saved_model')
     parser.add_argument('--dis_weight',        type=str)
     parser.add_argument('--gt_weight',         type=str)
