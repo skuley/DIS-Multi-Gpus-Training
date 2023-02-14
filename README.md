@@ -21,13 +21,13 @@
 
 # Data Augmentation
 ## Edged GT
-<img src="utils/images/GT_augementation.png">
+<img src="sample_images/GT_augementation.png">
 
 - Added BCE_Loss calculation between the output and Edged after filled GT loss calculation to aid the seperation between foreground and background.
 - Got reference from [EGNett: Edge Guidance Network for Salient Object Detection](https://arxiv.org/pdf/1908.08297.pdf) which is mainly about aiding discriminate foreground better from similar color range background.
 
 ## Random Blur
-<img src="utils/images/random_blur.png">
+<img src="sample_images/random_blur.png">
 
 - Added blurred patch on foreground and background boundary locations to all original images to increase complexity.
 - Extracted the biggest object from GT by selecting the largest contour area.
