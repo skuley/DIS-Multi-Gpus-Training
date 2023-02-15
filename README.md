@@ -1,23 +1,14 @@
-<h1 align="center" href="https://arxiv.org/pdf/2203.03041.pdf">
-    Highly Accurate Dichotomous Image Segmentation （ECCV 2022）
-</h1>
-<p align="center">
-</p>
-<hr>
-<h2 align="center">
+<h1>
     IS-Net/GT-Encoder Tuning and Data Augmentation
-</h2>
+</h1>
 
-<div align="center">
-    If you haven't read or looked into the paper or github
-    please do so before go deeper..
-    <br><br>
-    <a href="https://arxiv.org/pdf/2203.03041.pdf" ><img width="25px" src="utils/icons/paper.gif" ></a>
-    &nbsp; 
-    <a href="https://github.com/xuebinqin/DIS"><img width="28px" src="utils/icons/github.gif"></a>
-</div>
- 
-<hr>
+- paper : [Highly Accurate Dichotomous Image Segmentation ECCV 2022](https://arxiv.org/pdf/2203.03041.pdf)
+- github : [DIS](https://github.com/xuebinqin/DIS)
+
+<br>
+
+## Checkpoints
+- Gt_Encoder : [gtencoder](https://drive.google.com/drive/folders/17zk1NtoYAEtZPTh3ABqRIc1WQm0tm86n?usp=sharing)
 
 # Data Augmentation
 ## Edged GT
@@ -59,7 +50,6 @@ I have resized DIS5K/DIS-TR into 1280x1280 and saved just to speed up training p
 <img src="sample_images/gt_encoder_custom_stages.png"><br>
 - In order to preserve detailed pixels while encoding, instead of resizing upsample, I've continuously enlarged with [convolutional transpose 2d]() to all stages until its' same size as EN_2 shape.
 - Even if GT Encoder is overfitted, during Feature Synchronization with Image Segmentation Component, stages below EN_2's preservation seemed isn't suitable for pixel wise segmentation.
-- 
 
 [//]: # ()
 [//]: # (- DISNET의 decoder부분에서 작아진 이미지들을 영상처리가 아닌 딥러닝으로 이미지를 키워 데이터 손실을 줄이고 GT에 가까운 side outputs들을 추출하여 loss 계산할때 큰 도움을 받는것으로 보였다.)
