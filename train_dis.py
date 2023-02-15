@@ -1,5 +1,4 @@
 import os
-os.system('wandb login 882ffcb8c1e94481b5822a39770e72fdff1b0188')
 import os.path as osp
 import torch
 import pytorch_lightning as pl
