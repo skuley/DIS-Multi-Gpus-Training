@@ -1,4 +1,5 @@
 import os
+os.system('wandb login 882ffcb8c1e94481b5822a39770e72fdff1b0188')
 import os.path as osp
 import torch
 import pytorch_lightning as pl
@@ -10,7 +11,8 @@ import albumentations as A
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 
-from model.isnet import DISNet, GtEncoder
+from model.isnet import DISNet
+from model.isnet_custom import GtEncoder
 from model.segmentation import Net
 
 import argparse
@@ -18,7 +20,7 @@ import argparse
 def load_dataloader(args):    
         
     mask_transform = A.Compose([
-        A.Resize(width=args.input_size, height=args.input_size),
+        # A.Resize(width=args.input_size, height=args.input_size),
         A.RandomCrop(width=1024, height=1024),
         A.HorizontalFlip(p=0.5),
         A.VerticalFlip(p=0.8),
@@ -36,10 +38,11 @@ def load_dataloader(args):
     ])
     
     if args.train_type == 'disnet':
-        from utils.isnet_dataset import Dataset
+        from utils.isnet_dataset import Dataset, RandomBlur
         tr_ds = Dataset(image_path=args.tr_im_path, gt_path=args.tr_gt_path,
                         image_transform=image_transform,
                         gt_transform=mask_transform,
+                        random_blur=None,
                         load_on_mem=args.load_data_on_mem)
         vd_ds = Dataset(image_path=args.vd_im_path, gt_path=args.vd_gt_path,
                         image_transform=vd_transform,
@@ -73,10 +76,11 @@ def load_model(args):
         mode="min"
     )
     
-    # wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
-    trainer = pl.Trainer(# logger=wandb_logger,
+    wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
+    trainer = pl.Trainer(logger=wandb_logger,
              callbacks=[checkpoint_callback, early_stop_callback],
-             devices=torch.cuda.device_count(), strategy='ddp',
+             # devices=torch.cuda.device_count(), #strategy='ddp',
+             devices=[3],
              accelerator='gpu',
              min_epochs=args.min_epoch,
              max_epochs=args.max_epoch,
@@ -90,8 +94,8 @@ if __name__ == '__main__':
     parser.add_argument('--min_epoch',         type=int,      default=300)
     parser.add_argument('--max_epoch',         type=int,      default=400)
     parser.add_argument('--load_data_on_mem',  type=bool,     default=False)
-    parser.add_argument('--batch_size',        type=int,      default=16)
-    parser.add_argument('--lr',                type=float,    default=0.0001)
+    parser.add_argument('--batch_size',        type=int,      default=4)
+    parser.add_argument('--lr',                type=float,    default=0.001)
     parser.add_argument('--epsilon',           type=float,    default=1e-08)
     parser.add_argument('--train_type',        type=str,      default='disnet', choices=['disnet', 'gt_encoder'])
     parser.add_argument('--tr_im_path',        type=str,      default='')

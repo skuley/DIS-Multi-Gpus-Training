@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 class Dataset(Dataset):
     def __init__(self, image_path='../../data/DIS5K/DIS-TR/im', gt_path='../../data/DIS5K/DIS-TR/gt',
-                 image_transform=None, gt_transform=None, load_on_mem=False):
+                 image_transform=None, gt_transform=None, load_on_mem=False, random_blur=None):
         self.images = sorted(glob(os.path.join(image_path, '*.jpg')))
         self.gts = sorted(glob(os.path.join(gt_path, '*.png')))
         
@@ -23,6 +23,7 @@ class Dataset(Dataset):
         print(f'gts : {len(self.gts)}')
         
         self.load_on_mem = load_on_mem
+        self.random_blur = random_blur
 
         if self.load_on_mem:
             self.load_data()
@@ -39,9 +40,13 @@ class Dataset(Dataset):
             self.gt_lst.append(gt)
 
     def _transform(self, image, gt, image_transform=None, gt_transform=None):
+        if self.random_blur:
+            image = self.random_blur()(image=image, mask=gt, patches=5, patch_size=20)['image']
+            
         if self.image_transform:
             transformed = image_transform(image=image)
             image = transformed['image']
+            
         if self.gt_transform:
             transformed = gt_transform(image=image, mask=gt)
             image, gt = transformed['image'], transformed['mask']
