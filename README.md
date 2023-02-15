@@ -38,7 +38,7 @@
 from utils.augmentation import RandomBlur
 
 random_blur = RandomBlur()
-random_blur(image="opencv original image", mask="opencv GT mask", patches=2)
+random_blur(image="opencv original image", mask="opencv GT mask", patches=2, patch_size=20)
 ```
 
 ## [Albumentation](https://albumentations.ai/) 
