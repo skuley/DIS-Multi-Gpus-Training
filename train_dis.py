@@ -3,6 +3,7 @@ import os.path as osp
 import torch
 import pytorch_lightning as pl
 
+import torch
 from torch.utils.data import DataLoader
 from torchvision.transforms import transforms as T
 import albumentations as A
@@ -78,8 +79,7 @@ def load_model(args):
     # wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
     trainer = pl.Trainer(# logger=wandb_logger,
              callbacks=[checkpoint_callback, early_stop_callback],
-             # devices=torch.cuda.device_count(), #strategy='ddp',
-             devices=[3],
+             devices=torch.cuda.device_count(), strategy='ddp',
              accelerator='gpu',
              min_epochs=args.min_epoch,
              max_epochs=args.max_epoch,
