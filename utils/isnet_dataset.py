@@ -3,6 +3,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from PIL import Image
 from glob import glob
+import cv2
 import numpy as np
 import albumentations as A
 
@@ -33,11 +34,7 @@ class Dataset(Dataset):
         self.im_lst = []
         self.gt_lst = []
         for im, gt in tqdm(zip(self.images, self.gts), total=self.__len__()):
-            image, gt = Image.open(im).convert("RGB"), Image.open(gt).convert('L')
-            image, gt = np.array(image), np.array(gt)
-            if self.gt_transform:
-                transformed = self.gt_transform[0](image=image, mask=gt)
-                image, gt = transformed['image'], transformed['mask']
+            image, gt = cv2.imread(im), cv2.imread(gt, cv2.IMREAD_GRAYSCALE)
             self.im_lst.append(image)
             self.gt_lst.append(gt)
 
@@ -55,14 +52,11 @@ class Dataset(Dataset):
 
     def __getitem__(self, idx):
         if self.load_on_mem:
-            image, gt = self._transform(self.im_lst[idx], self.gt_lst[idx],
-                                        image_transform=self.image_transform,
-                                        gt_transform=A.Compose(self.gt_transform[1:]))
+            image, gt = self.im_lst[idx], self.gt_lst[idx]
         else:
-            image, gt = Image.open(self.images[idx]).convert("RGB"), Image.open(self.gts[idx]).convert('L')
-            image, gt = np.array(image), np.array(gt)
-            image, gt = self._transform(image, gt,
-                                        image_transform=self.image_transform, 
-                                        gt_transform=self.gt_transform)
+            image, gt = cv2.imread(self.images[idx]), cv2.imread(self.gts[idx], cv2.IMREAD_GRAYSCALE)
+        image, gt = self._transform(image, gt,
+                                    image_transform=self.image_transform, 
+                                    gt_transform=self.gt_transform)
 
         return {'image': image, 'gt': gt}

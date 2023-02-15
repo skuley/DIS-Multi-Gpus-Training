@@ -6,9 +6,8 @@ from model.common.model_enum import NetType
 
 class GtEncoder(nn.Module):
     def __init__(self, in_ch=1, out_ch=1):
-        super(GTNet, self).__init__()
+        super(GtEncoder, self).__init__()
 
-        # self.stage0 = nn.Conv2d(in_ch, 16, kernel_size=3, stride=2, padding=1)
         self.conv_in = myrebnconv(in_ch,16,3,stride=2,padding=1)
 
         self.stage1 = RSU7(16, 16, 64)
@@ -35,10 +34,6 @@ class GtEncoder(nn.Module):
 
         self.side1 = nn.Conv2d(64,out_ch,3,padding=1)
         self.side2 = nn.Conv2d(64,out_ch,3,padding=1)
-        # self.side3 = nn.Conv2d(128,out_ch,3,padding=1)
-        # self.side4 = nn.Conv2d(256,out_ch,3,padding=1)
-        # self.side5 = nn.Conv2d(512,out_ch,3,padding=1)
-        # self.side6 = nn.Conv2d(512,out_ch,3,padding=1)
         self.side3 = nn.Conv2d(64, out_ch, 3, padding=1)
         self.side4 = nn.Conv2d(64, out_ch, 3, padding=1)
         self.side5 = nn.Conv2d(64, out_ch, 3, padding=1)
@@ -224,10 +219,6 @@ class DISNet(nn.Module):
 
         d0 = self.outconv(torch.cat((d1, d2, d3, d4, d5, d6), 1))
 
-        # side_outputs = (
-        #     get_sigmoid(d0), get_sigmoid(d1), get_sigmoid(d2), get_sigmoid(d3), get_sigmoid(d4), get_sigmoid(d5),
-        #     get_sigmoid(d6))
-        
         side_outputs = (d0, d1, d2, d3, d4, d5,d6)
 
         return side_outputs, feature_maps
