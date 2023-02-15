@@ -75,8 +75,8 @@ def load_model(args):
         mode="min"
     )
     
-    wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
-    trainer = pl.Trainer(logger=wandb_logger,
+    # wandb_logger = WandbLogger(name=f'{args.train_type}',project='DISNet')
+    trainer = pl.Trainer(# logger=wandb_logger,
              callbacks=[checkpoint_callback, early_stop_callback],
              # devices=torch.cuda.device_count(), #strategy='ddp',
              devices=[3],
