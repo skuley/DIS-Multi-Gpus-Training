@@ -24,7 +24,7 @@
 <img src="sample_images/GT_augementation.png">
 
 - Added BCE_Loss calculation between the output and Edged after filled GT loss calculation to aid the seperation between foreground and background.
-- Got reference from [EGNett: Edge Guidance Network for Salient Object Detection](https://arxiv.org/pdf/1908.08297.pdf) which is mainly about aiding discriminate foreground better from similar color range background.
+- Got reference from [EGNet: Edge Guidance Network for Salient Object Detection](https://arxiv.org/pdf/1908.08297.pdf) which is mainly about aiding discriminate foreground better from similar color range background.
 
 ## Random Blur
 <img src="sample_images/random_blur.png">
@@ -49,9 +49,14 @@ I have resized DIS5K/DIS-TR into 1280x1280 and saved just to speed up training p
 - 80% 90 degree Rotation
 - 80% ElasticTransform
 
+<br><br>
 # Model Tuning
-## GT Encoder
-- In SOTA model, All feature maps below EN_2 stage, the size of output get smaller as stage goes on.
+## GT Encoder 
+- In ISNet model, All feature maps below EN_2 stage, the size of output get smaller as stage goes on.
+- GtEncoder [Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, GT]
+<img src="sample_images/gt_encoder_stages.png"><br>
+- GtEncoder Custom [Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, GT]
+<img src="sample_images/gt_encoder_custom_stages.png"><br>
 - In order to preserve detailed pixels while encoding, instead of resizing upsample, I've continuously enlarged with [convolutional transpose 2d]() to all stages until its' same size as EN_2 shape.
 - Even if GT Encoder is overfitted, during Feature Synchronization with Image Segmentation Component, stages below EN_2's preservation seemed isn't suitable for pixel wise segmentation.
 - 
