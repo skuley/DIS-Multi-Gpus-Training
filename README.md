@@ -35,7 +35,7 @@
 - Area of patches will be randomly chosen.
 
 ```python
-from src.utils.augmentation import RandomBlur
+from utils.augmentation import RandomBlur
 
 random_blur = RandomBlur()
 random_blur(image="opencv original image", mask="opencv GT mask", patches=2)
