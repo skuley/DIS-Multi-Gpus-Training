@@ -7,6 +7,10 @@
 
 <br>
 
+## Updates!
+- requirements for this repository updated!
+- Please follow walkthrough in [U2Net-Multi-Gpus-Training](https://github.com/skuley/U2Net-Multi-Gpus-Training)
+
 ## Checkpoints
 - Gt_Encoder : [gtencoder](https://drive.google.com/drive/folders/17zk1NtoYAEtZPTh3ABqRIc1WQm0tm86n?usp=sharing)
 
