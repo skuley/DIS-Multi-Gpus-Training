@@ -42,7 +42,7 @@ random_blur(image="opencv original image", mask="opencv GT mask", patches=2)
 ```
 
 ## [Albumentation](https://albumentations.ai/) 
-- Resize 1280x1280
+I have resized DIS5K/DIS-TR into 1280x1280 and saved just to speed up training process. Thus, if this process was not fullfiled, it is necessary to resize inputs into required size [1280x1280]
 - RandomCrop 1024x1024
 - 50% Random Horizontal Flip
 - 80% Random Vertical Flip
