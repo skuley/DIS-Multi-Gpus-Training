@@ -38,7 +38,8 @@ def load_dataloader(args):
     ])
     
     if args.train_type == 'disnet':
-        from utils.isnet_dataset import Dataset, RandomBlur
+        from utils.isnet_dataset import Dataset
+        from utils.augmentation import RandomBlur
         tr_ds = Dataset(image_path=args.tr_im_path, gt_path=args.tr_gt_path,
                         image_transform=image_transform,
                         gt_transform=mask_transform,
