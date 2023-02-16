@@ -52,8 +52,9 @@ I have resized DIS5K/DIS-TR into 1280x1280 and saved just to speed up training p
 <img src="sample_images/gt_encoder_stages.png"><br>
 - GtEncoder Custom [Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, GT]
 <img src="sample_images/gt_encoder_custom_stages.png"><br>
-- In order to preserve detailed pixels while encoding, instead of resizing upsample, I've continuously enlarged with [convolutional transpose 2d]() to all stages until its' same size as EN_2 shape.
+- In order to preserve detailed pixels in upsampling, I've continuously enlarged with [convolutional transpose 2d]() to all stages until its' same size as EN_2 shape.
 - Even if GT Encoder is overfitted, during Feature Synchronization with Image Segmentation Component, stages below EN_2's preservation seemed isn't suitable for pixel wise segmentation.
+- I've used same augmentation in training gt_encoder because I've thought that it would help in training ISNet.
 
 [//]: # ()
 [//]: # (- DISNET의 decoder부분에서 작아진 이미지들을 영상처리가 아닌 딥러닝으로 이미지를 키워 데이터 손실을 줄이고 GT에 가까운 side outputs들을 추출하여 loss 계산할때 큰 도움을 받는것으로 보였다.)
