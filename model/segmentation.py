@@ -103,9 +103,9 @@ class Net(pl.LightningModule):
                     sd[key] = value
             checkpoint['state_dict'] = sd
             
-    def on_load_checkpoint(self, checkpoint: Dict[str, Any]) -> None:
-        if self.gt_encoder:
-            self.net.load(checkpoint, map_location='cpu', strict=False)
+#     def on_load_checkpoint(self, checkpoint: Dict[str, Any]) -> None:
+#         if self.gt_encoder:
+#             self.net.load(checkpoint, map_location='cpu', strict=False)
                 
     def predict_step(self, batch, batch_idx):
         image, gt = batch['image'], batch['gt']
