@@ -33,9 +33,6 @@ def feature_sync(gt_outputs, net_outputs):
     loss = sum(loss_lst)
     return loss
 
-    loss = nn.L1Loss()
-    return loss(input_data, target_data)
-
 class Net(pl.LightningModule):
     def __init__(self, model, pretrained: str = None, lr: float = 0.001, epsilon: float = 1e-08) -> object:
         super(Net, self).__init__()

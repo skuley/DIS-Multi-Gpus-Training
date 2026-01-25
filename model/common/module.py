@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 
 def _upsample_like(src, tar):
-    src = F.interpolate(src, size=tar.shape[2:], mode='bilinear')
+    src = F.interpolate(src, size=tar.shape[2:], mode='bilinear', align_corners=True)
     return src
 
 def get_activation(activation_type):

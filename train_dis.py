@@ -3,7 +3,6 @@ import os.path as osp
 import torch
 import pytorch_lightning as pl
 
-import torch
 from torch.utils.data import DataLoader
 from torchvision.transforms import transforms as T
 import albumentations as A
@@ -11,8 +10,7 @@ import albumentations as A
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 
-from model.isnet import DISNet
-from model.isnet_custom import GtEncoder
+from model.isnet import DISNet, GtEncoder
 from model.segmentation import Net
 
 import argparse
