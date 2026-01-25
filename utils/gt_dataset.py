@@ -1,7 +1,7 @@
 from PIL import Image, ImageOps
 import os
 import os.path as osp
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset as BaseDataset
 from glob import glob
 import cv2
 import numpy as np
@@ -9,7 +9,7 @@ from torchvision.transforms import transforms as T
 from tqdm import tqdm
 
 
-class Dataset(Dataset):
+class Dataset(BaseDataset):
     def __init__(self, image_path='', transform=None):
         super(Dataset, self).__init__()
 #         assert osp.isdir(image_path) == True, f"{image_path} is not a directory"

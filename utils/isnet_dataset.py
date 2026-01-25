@@ -1,5 +1,5 @@
 import os
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset as BaseDataset
 from torchvision import transforms
 from PIL import Image
 from glob import glob
@@ -10,7 +10,7 @@ import albumentations as A
 from tqdm import tqdm
 
 
-class Dataset(Dataset):
+class Dataset(BaseDataset):
     def __init__(self, image_path='../../data/DIS5K/DIS-TR/im', gt_path='../../data/DIS5K/DIS-TR/gt',
                  image_transform=None, gt_transform=None, load_on_mem=False, random_blur=None):
         self.images = sorted(glob(os.path.join(image_path, '*.jpg')))
